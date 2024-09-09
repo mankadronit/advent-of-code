@@ -12,96 +12,82 @@ const dic = {
     nine: 9,
 };
 
+// Check if a character is a digit
 function isDigit(char) {
     return !isNaN(Number.parseInt(char));
 }
 
+// Find number words within a line and return their positions
 function findNumberWords(line) {
-    ans = {};
-    for (let i = 0; i < line.length - 1; i++) {
-        for (let j = i + 1; j < line.length; j++) {
-            let word = line.substring(i, j + 1);
+    const ans = {};
+    for (let i = 0; i < line.length; i++) {
+        for (let j = i + 1; j <= line.length; j++) {
+            const word = line.substring(i, j);
             if (word in dic) {
-                if (!("first" in ans)) {
-                    ans["first"] = [dic[word], i];
+                if (!ans.first) {
+                    ans.first = [dic[word], i];
                 } else {
-                    ans["last"] = [dic[word], line.length - i];
+                    ans.last = [dic[word], line.length - i];
                 }
             }
         }
     }
-
-    if (!("last" in ans) & ("first" in ans)) {
-        ans["last"] = [ans["first"][0], line.length - ans["first"][1]];
+    if (!ans.last && ans.first) {
+        ans.last = [ans.first[0], line.length - ans.first[1]];
     }
-
     return ans;
 }
 
+// Find the first numeric character in a line
 function findNumber(line, reverse = false) {
-    if (reverse) {
-        line = line.split("").reverse().join("");
-    }
-
-    for (let i = 0; i < line.length; i++) {
-        if (isDigit(line[i])) {
-            return [line[i], i];
+    const searchLine = reverse ? line.split("").reverse().join("") : line;
+    for (let i = 0; i < searchLine.length; i++) {
+        if (isDigit(searchLine[i])) {
+            return [searchLine[i], i];
         }
     }
+    return null;
 }
 
+// Read the file and process each line
 function readFile(filePath, encoding = "utf-8") {
-    fs.readFile(filePath, encoding, function (err, data) {
+    fs.readFile(filePath, encoding, (err, data) => {
         if (err) {
-            console.log(err);
+            console.error("Error reading file:", err);
+            return;
         }
 
         let sum = 0;
 
-        data.split("\n").forEach(function (line) {
-            if (!line) {
-                return;
-            }
+        data.split("\n").forEach((line) => {
+            if (!line) return;
 
             let first = line[0];
             let last = line[line.length - 1];
-
             let val = first + last;
 
             if (isNaN(val)) {
-                let a = findNumber(line) || Infinity;
-                let b = findNumber(line, (reverse = true)) || -Infinity;
+                const firstNumber = findNumber(line) || [Infinity, 0];
+                const lastNumber = findNumber(line, true) || [-Infinity, 0];
 
-                let w = findNumberWords(line);
-                let x, y;
+                const words = findNumberWords(line);
+                let firstWordNumber = firstNumber[0],
+                    lastWordNumber = lastNumber[0];
 
-                if ("first" in w === true) {
-                    if (a[1] < w["first"][1]) {
-                        x = a[0];
-                    } else {
-                        x = w["first"][0];
-                    }
-                } else {
-                    x = a[0];
+                if (words.first && firstNumber[1] >= words.first[1]) {
+                    firstWordNumber = words.first[0];
+                }
+                if (words.last && lastNumber[1] >= words.last[1]) {
+                    lastWordNumber = words.last[0];
                 }
 
-                if ("last" in w === true) {
-                    if (b[1] < w["last"][1]) {
-                        y = b[0];
-                    } else {
-                        y = w["last"][0];
-                    }
-                } else {
-                    y = b[0];
-                }
-
-                val = String(x) + String(y);
+                val = `${firstWordNumber}${lastWordNumber}`;
             }
 
             sum += Number(val);
         });
 
-        console.log(sum);
+        console.log("Sum:", sum);
     });
 }
 
