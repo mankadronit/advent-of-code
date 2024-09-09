@@ -4,15 +4,12 @@
   <img src="./public/advent-code.png" alt="Advent of Code Banner" width="100%" />
 </p>
 
+![Language](https://img.shields.io/badge/Language-Javascript-yellow) 
+![Challenge](https://img.shields.io/badge/Advent_of_Code-blueviolet)
 
 # Advent of Code Solutions
 
 Welcome to my solutions for the **Advent of Code** challenges. This repository contains code solutions to the daily coding puzzles of Advent of Code, an annual coding event.
-
-## 🏷️ Tags
-
-- **Languages**: JavaScript, Node.js
-- **Challenges**: Algorithms, Data Structures, Problem Solving
 
 ## 🚀 Getting Started
 
