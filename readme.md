@@ -33,7 +33,7 @@ node solution.js
 | Day | Challenge                                   | Language   | Solution                          |
 |-----|---------------------------------------------|------------|-----------------------------------|
 | 1   | [Trebuchet?!](https://adventofcode.com/2023/day/1) | JavaScript | [Day 1 Solution](./2023/day01/solution.js)       |
-| 2   | To be added                                 | JavaScript | [Day 2 Solution](./2023/day02/solution.js)       |
+| 2   | [Cube Conundrum](https://adventofcode.com/2023/day/2)                                 | JavaScript | [Day 2 Solution](./2023/day02/solution.js)       |
 | ... |                                             |            |                                   |
 ## 🎯 Advent of Code
 
