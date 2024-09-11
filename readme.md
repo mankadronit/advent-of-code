@@ -34,6 +34,7 @@ node solution.js
 |-----|---------------------------------------------|------------|-----------------------------------|
 | 1   | [Trebuchet?!](https://adventofcode.com/2023/day/1) | JavaScript | [Day 1 Solution](./2023/day01/solution.js)       |
 | 2   | [Cube Conundrum](https://adventofcode.com/2023/day/2)                                 | JavaScript | [Day 2 Solution](./2023/day02/solution.js)       |
+| 3   | [Gear Ratios](https://adventofcode.com/2023/day/3)                                 | JavaScript | [Day 3 Solution](./2023/day03/solution.js)       |
 | ... |                                             |            |                                   |
 ## 🎯 Advent of Code
 
