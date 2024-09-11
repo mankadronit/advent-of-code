@@ -52,13 +52,18 @@ function checkValidity(matrix, row, start_col, end_col) {
                 (c <= TOTAL_COLUMNS - 1)
             ) {
                 if (isNaN(Number(matrix[r][c])) & (matrix[r][c] !== ".")) {
-                    return true;
+                    if (matrix[r][c] === "*") {
+                        // [isValid, isGearAdjacent, gearId]
+                        return [true, true, `${r}.${c}`];
+                    } else {
+                        return [true, false, ""];
+                    }
                 }
             }
         }
     }
 
-    return false;
+    return [false, false, ""];
 }
 
 // Loop through the matrix and get all valid parts
@@ -67,6 +72,7 @@ function getValidParts(matrix) {
     let col = 0;
 
     let validParts = [];
+    let gearConnections = {};
 
     // Loop through entire matrix
     while (row <= TOTAL_ROWS - 1) {
@@ -85,8 +91,24 @@ function getValidParts(matrix) {
             let num = Number(matrix[row].slice(start_col, end_col).join(""));
 
             // Check Validity
-            if (!isNaN(num) && checkValidity(matrix, row, start_col, end_col)) {
-                validParts.push(num);
+            if (!isNaN(num)) {
+                let [isValid, isGearAdjacent, gearId] = checkValidity(
+                    matrix,
+                    row,
+                    start_col,
+                    end_col,
+                );
+
+                if (isValid) {
+                    validParts.push(num);
+                }
+
+                // If number is adjacent to a gear, add it to the gearConnections map
+                if (isGearAdjacent) {
+                    gearConnections[gearId] = gearConnections[gearId] || [];
+
+                    gearConnections[gearId].push(num);
+                }
             }
 
             col = end_col + 1;
@@ -96,13 +118,26 @@ function getValidParts(matrix) {
         col = 0;
     }
 
-    return validParts;
+    return [validParts, gearConnections];
 }
 
-const validParts = getValidParts(matrix);
+const [validParts, gearConnections] = getValidParts(matrix);
 
-const ans = validParts.reduce((previous, current) => {
+const ans1 = validParts.reduce((previous, current) => {
     return previous + current;
 }, 0);
 
-console.log("Answer: ", ans);
+let gear_ratio = 0;
+
+for (const gearId in gearConnections) {
+    if (gearConnections[gearId].length <= 1) {
+        continue;
+    } else {
+        gear_ratio += gearConnections[gearId].reduce((previous, current) => {
+            return previous * current;
+        }, 1);
+    }
+}
+
+console.log("Part One Answer: ", ans1);
+console.log("Part Two Answer: ", gear_ratio);
